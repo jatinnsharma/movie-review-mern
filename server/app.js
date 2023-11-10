@@ -7,6 +7,7 @@ const PORT = 8000
 
 //user model
 app.use("/api/user",userRouter)
+
 // This method will convert everythig comming from our frontend to this JSON for me.
 app.use(express.json)
 
