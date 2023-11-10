@@ -26,6 +26,7 @@ userSchema.pre('save',async function(next){
 if(this.isModified('password')){
     this.password = await bcrypt.hash(this.password,10)
 }
+// next() will decide whether we want to move to the next function or not 
 next();
 })
 
