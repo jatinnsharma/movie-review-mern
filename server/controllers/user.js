@@ -2,7 +2,8 @@
 // Response : whatever you want to send to your frontend will handle by response. 
 const nodemailer = require('nodemailer')
 const User = require('../models/user')
-const EmailVerificationToken = require('../models/emailVerificationToken')
+const EmailVerificationToken = require('../models/emailVerificationToken');
+const { isValidObjectId } = require('mongoose');
 
 
 
@@ -61,3 +62,28 @@ exports.create = async (req,res)=>{
    
 }
 
+
+
+
+exports.verifyEmail = async (req,res)=>{
+    const {userId,OTP} = req.body;
+
+    if(! isValidObjectId(userId)){
+    return (
+        res.json({error:"Invalid user"})
+    )
+}  
+const user = await User.findById(userId)
+if(!user){
+    return (
+        res.json({error:"user not found"})
+    )
+}
+
+if(user.isVerified) return res.json({error : "user is already verified!"})
+
+const token = await EmailVerificationToken.findOne({owner:userId})
+
+if(!token) return res.json({error:"Token not found!"})
+
+}

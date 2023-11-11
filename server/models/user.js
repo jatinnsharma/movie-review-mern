@@ -15,6 +15,11 @@ const bcrypt = require('bcrypt')
     password:{
         type:String,
         required:true,
+    },
+    isVerified:{
+        type:Boolean,
+        required:true,
+        default:false,
     }
  })
 
