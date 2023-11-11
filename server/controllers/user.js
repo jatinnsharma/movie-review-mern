@@ -16,7 +16,17 @@ exports.create = async (req,res)=>{
     const newUser = new User({name,email,password})
      
     // save inside our database which async task
-    await newUser.save() 
+    await newUser.save()
+    
+    // var transport = nodemailer.createTransport({
+    //     host: "sandbox.smtp.mailtrap.io",
+    //     port: 2525,
+    //     auth: {
+    //       user: "7ac9c9a456c06e",
+    //       pass: "6886953acb65d1"
+    //     }
+    //   });
+    
     // 201 status code used for creating
     res.status(201).json({user:newUser})
    
