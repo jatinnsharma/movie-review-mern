@@ -1,0 +1,6 @@
+Forget Password 
+==================
+
+1. we will use their email Id find out that user inside our database.
+2. If that user is available, then we will send a token to their email ID and only with that token they can reset the new password will not allow anyone to reset their password.
+3.
