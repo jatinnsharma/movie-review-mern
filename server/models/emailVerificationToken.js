@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const emailVerificationTokenSchema = mongoose.schema({
+const emailVerificationTokenSchema = mongoose.Schema({
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
@@ -16,7 +16,13 @@ const emailVerificationTokenSchema = mongoose.schema({
         expires:3600,
         default:Date.now()
     },
+    isVerified:{
+        type:Boolean,
+        required:true,
+        default:false,
+    }
 })
+
 // arrow function don't have this keyword that we are using normal function
 emailVerificationTokenSchema.pre('save',async function(next){
     if(this.isModified('token')){
@@ -25,6 +31,13 @@ emailVerificationTokenSchema.pre('save',async function(next){
     next();
     })
 
+    // this compare method give true if match otherwise  false 
+    emailVerificationTokenSchema.methods.compaireToken = async function (token) {
+        // in compare methods need two thing 
+        // actual data and encrypted value.
+      const result =   await bcrypt.compare(token , this.token)
+      return result;
+    }
 
 module.exports = mongoose.model(
     "EmailVerificationToken",
@@ -32,7 +45,7 @@ module.exports = mongoose.model(
 )
 
 // verificationToken:{
-    // owner : _id,
+    // owner : _id, 
     // token:otp (needs to be in hashed format),
     // expiryDate: 1 hr 
 // }
