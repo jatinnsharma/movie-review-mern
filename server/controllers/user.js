@@ -74,7 +74,7 @@ exports.verifyEmail = async (req, res) => {
 
     if (!token) return sendError(res,"Token not found !" ) 
 
-    const isMatch = await token.compaireToken(OTP)
+    const isMatch = await token.compareToken(OTP)
     if (!isMatch)  return sendError(res,"Please submit a valid OTP") 
    
 
@@ -163,7 +163,7 @@ exports.forgetPassword = async (req,res)=>{
         html: `
         <p>Clich here to reset password</p>
         <a href='${resetPasswordUrl}'>Change Password</a>
-        `
+        ` 
     })
 
     res.json({message:"Link sent to your email !!"})

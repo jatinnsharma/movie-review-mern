@@ -32,7 +32,7 @@ emailVerificationTokenSchema.pre('save',async function(next){
     })
 
     // this compare method give true if match otherwise  false 
-    emailVerificationTokenSchema.methods.compaireToken = async function (token) {
+    emailVerificationTokenSchema.methods.compareToken = async function (token) {
         // in compare methods need two thing 
         // actual data and encrypted value.
       const result =   await bcrypt.compare(token , this.token)
