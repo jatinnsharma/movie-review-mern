@@ -1,11 +1,10 @@
 // Request will have the information,whatever that is,comming form our frontend.
 // Response : whatever you want to send to your frontend will handle by response. 
-const nodemailer = require('nodemailer')
 const User = require('../models/user')
 const EmailVerificationToken = require('../models/emailVerificationToken');
 const { isValidObjectId } = require('mongoose');
 const { generateOTP, generateMailTransporter } = require('../utils/mail');
-const { sendError } = require('../utils/helper');
+const { sendError, generateRandomByte } = require('../utils/helper');
 const PasswordResetToken = require("../models/passwordResetToken")
 
 
@@ -137,7 +136,6 @@ exports.resendEmailVerificationToken = async (req,res) =>{
 
 }
 
-
 exports.forgetPassword = async (req,res)=>{
     const {email} = req.body;
 
@@ -149,5 +147,25 @@ exports.forgetPassword = async (req,res)=>{
     // check already reset password  token inside database.
    const alreadyHasToken =  await PasswordResetToken.findOne({owner:user._id})
    if(alreadyHasToken) return sendError(res,'Only after one hour you can request for another token') 
+
+    const token = await generateRandomByte();
+    const newPasswordResetToken = await PasswordResetToken({owner:user._id,token});
+    await newPasswordResetToken.save();
+
+    const resetPasswordUrl = `http://localhost:3000/reset-password?token=${token}$id=${user._id}`
+
+    var transport = generateMailTransporter()
+
+    transport.sendMail({
+        from: "security@moviereviewapp.com",
+        to: user.email,
+        subject: 'Reset Password Link',
+        html: `
+        <p>Clich here to reset password</p>
+        <a href='${resetPasswordUrl}'>Change Password</a>
+        `
+    })
+
+    res.json({message:"Link sent to your email !!"})
 
 }
