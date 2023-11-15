@@ -1,6 +1,7 @@
 // Request will have the information,whatever that is,comming form our frontend.
 // Response : whatever you want to send to your frontend will handle by response. 
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 const EmailVerificationToken = require('../models/emailVerificationToken');
 const { isValidObjectId } = require('mongoose');
 const { generateOTP, generateMailTransporter } = require('../utils/mail');
@@ -173,6 +174,7 @@ exports.forgetPassword = async (req,res)=>{
 exports.sendResetPasswordTokenStatus = (req,res)=>{
     res.json({valid:true});
 }
+
 exports.resetPassword = async (req,res)=>{
     const {newPassword,userId} = req.body;
 
@@ -201,4 +203,21 @@ exports.resetPassword = async (req,res)=>{
 
 
 
+}
+
+exports.signIn = async (req,res)=>{
+    const {email,password} = req.body;
+
+    const user = await User.findOne({email})
+    if(!user) return sendError(res,'Email/Password mismatch!')
+
+    const matched = await user.comparePassword(password) 
+    if(!matched) return sendError(res,'Email/Password mismatch!');
+
+    const {_id,name} = user
+
+    const jwtToken = jwt.sign( {user: {id:_id,name,email,token:jwtToken}},'jatinsharmasecretkey');
+    res.json({user:{id: _id}})
+
+    
 }

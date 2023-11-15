@@ -3,4 +3,14 @@ Forget Password
 
 1. we will use their email Id find out that user inside our database.
 2. If that user is available, then we will send a token to their email ID and only with that token they can reset the new password will not allow anyone to reset their password.
-3.
+
+
+Signing 
+========
+- Signing a user Id just like when a user wants to use any private
+route will ask them their username and password.
+- But asking them every time that username and password is not a good user experience.
+- So we are using JWT , we can sign a brand new token whenever a user,since their email and password to us will verify that and we will sign this special token and will send token to our frontend app.
+- And whenever a user wants to use any private route then we will, instead of asking their email and password , will ask for this recently token and we will verify this inside our backend.
+
+
