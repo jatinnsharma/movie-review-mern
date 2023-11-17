@@ -205,19 +205,21 @@ exports.resetPassword = async (req,res)=>{
 
 }
 
-exports.signIn = async (req,res)=>{
+exports.signIn = async (req,res,next)=>{
     const {email,password} = req.body;
 
-    const user = await User.findOne({email})
-    if(!user) return sendError(res,'Email/Password mismatch!')
-
-    const matched = await user.comparePassword(password) 
-    if(!matched) return sendError(res,'Email/Password mismatch!');
-
-    const {_id,name} = user
-
-    const jwtToken = jwt.sign( {user: {id:_id,name,email,token:jwtToken}},process.env.JWT_SECRET);
-    res.json({user:{id: _id}})
-
+        const user = await User.findOne({email})
+        if(!user) return sendError(res,'Email/Password mismatch!')
     
+        const matched = await user.comparePassword(password) 
+        if(!matched) return sendError(res,'Email/Password mismatch!');
+    
+        const {_id,name} = user
+    
+        const jwtToken = jwt.sign( {user: {id:_id,name,email,token:jwtToken}},process.env.JWT_SECRET);
+        res.json({user:{id: _id,name,email,token:jwtToken}})
+    
+      
+
+
 }
