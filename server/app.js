@@ -9,6 +9,7 @@ const { errorHandler } = require('./middlewares/error');
 const PORT = process.env.PORT || 8000
 // MVC - Modal View Controller
 // This method will convert everythig comming from our frontend to this JSON for me.
+
 app.use(express.json())
 app.use(morgan('dev'))
 //user model

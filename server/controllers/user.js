@@ -201,8 +201,6 @@ exports.resetPassword = async (req,res)=>{
     })
     res.json({message:"Password reset successfully , now you can use new password."})
 
-
-
 }
 
 exports.signIn = async (req,res,next)=>{
@@ -219,7 +217,4 @@ exports.signIn = async (req,res,next)=>{
         const jwtToken = jwt.sign( {user: {id:_id,name,email,token:jwtToken}},process.env.JWT_SECRET);
         res.json({user:{id: _id,name,email,token:jwtToken}})
     
-      
-
-
 }
