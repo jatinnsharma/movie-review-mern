@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Remove increment and decrement icon from input field */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
